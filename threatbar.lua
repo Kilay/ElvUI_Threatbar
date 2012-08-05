@@ -87,12 +87,21 @@ function M:InitializeThreatBar()
 	if threatbar_db.threatbar_enable ~= true then
 		if OUIThreat ~= nil then
 			OUIThreat:Hide()
+			OUIThreat = nil
 			OUIThreat:SetScript("OnEvent", nil)
 			OUIThreat:SetScript("OnUpdate", nil)
 		end
 		return
 	else
 		if OUIThreat ~= nil then
+			if threatbar_db.threatbar_position == 'LEFT' then
+				OUIThreat:SetParent(LeftChatDataPanel)
+				OUIThreat:SetAllPoints(LeftChatDataPanel)
+			elseif threatbar_db.threatbar_position == 'RIGHT' then
+				OUIThreat:SetParent(RightChatDataPanel)
+				OUIThreat:SetAllPoints(RightChatDataPanel)
+			end
+			OUIThreat:SetFrameStrata("TOOLTIP")
 			OUIThreat:Show()
 			OUIThreat:SetScript("OnEvent", OnEvent)
 			OUIThreat:SetScript("OnUpdate", OnUpdate)
@@ -103,7 +112,12 @@ function M:InitializeThreatBar()
 end
 
 function M:LoadThreatBar()
-	OUIThreat = CreateFrame("StatusBar", "OUIThreatBar", RightChatDataPanel)
+	if threatbar_db.threatbar_position == 'LEFT' then
+		OUIThreat = CreateFrame("StatusBar", "OUIThreatBar", LeftChatDataPanel)
+	elseif threatbar_db.threatbar_position == 'RIGHT' then
+		OUIThreat = CreateFrame("StatusBar", "OUIThreatBar", RightChatDataPanel)
+	end
+	
 	OUIThreat:Point("TOPLEFT", 2, -2)
 	OUIThreat:Point("BOTTOMRIGHT", -2, 2)
 

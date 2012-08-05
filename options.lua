@@ -5,6 +5,7 @@ threatbar_db = threatbar_db or {
 	["threatbar_enable"] = true,
 	["threatbar_sound_disable"] = false,
 	["threatbar_sound"] = "Fel Nova",
+	["threatbar_position"] = 'RIGHT',
     ["threatbar_low_color"] = {
 		["r"] = 0.2941176470588235,
 		["g"] = 0.6862745098039216,
@@ -38,6 +39,19 @@ E.Options.args.datatexts.args.elvui_threatbar = {
             get = function(info) return threatbar_db[ info[#info] ] end,
             set = function(info, value) threatbar_db[ info[#info] ] = value; M:InitializeThreatBar() end,               
         },
+		threatbar_position = {
+			order = 3,
+			type = 'select',
+			name = L['Position'],
+			desc = L['Position of the threatbar.'],
+			values = {
+				['LEFT'] = L['Embedded left'],
+				['RIGHT'] = L['Embedded right'],
+				['MOVER'] = L['Mover'],
+			},
+			get = function(info) return threatbar_db[ info[#info] ] end,
+			set = function(info, value) threatbar_db[ info[#info] ] = value; M:InitializeThreatBar() end
+		},
 		threatbar_sound_disable = {
             order = 2,
             name = L["Disable Sound"],
@@ -47,7 +61,8 @@ E.Options.args.datatexts.args.elvui_threatbar = {
             set = function(info, value) threatbar_db[ info[#info] ] = value end,               
         },
 		threatbar_sound = {
-			type = "select", dialogControl = 'LSM30_Sound',
+			type = "select",
+			dialogControl = 'LSM30_Sound',
 			order = 3,
 			name = L["Sound"],
 			desc = L["Sound that will play when you have a warning icon displayed."],
