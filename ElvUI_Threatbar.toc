@@ -1,0 +1,11 @@
+## Interface: 40300
+## Title: |cff1784d1ElvUI|r Threatbar|r
+## Author: Kilay
+## Notes: Elv's UI Threatbar
+## Version: 1.1
+## RequiredDeps: ElvUI
+## SavedVariablesPerCharacter: threatbar_db
+## DefaultState: Enabled
+## X-Credits: Potente from Tichondrius (https://github.com/enorthey/Tukui), Elv (http://www.tukui.org/forums/profile.php?id=232), Nidra (http://www.tukui.org/forums/profile.php?id=1641)
+
+init.xml
