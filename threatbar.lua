@@ -1,7 +1,7 @@
 local E, L, P, G = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 local LSM = LibStub("LibSharedMedia-3.0")
-local OUIThreat
+local OUIThreat, Mover
 
 -- event func
 local function OnEvent(self, event, ...)
@@ -101,6 +101,8 @@ function M:InitializeThreatBar()
 				OUIThreat:SetParent(RightChatDataPanel)
 				OUIThreat:SetAllPoints(RightChatDataPanel)
 			end
+			OUIThreat:Point("TOPLEFT", 2, -2)
+			OUIThreat:Point("BOTTOMRIGHT", -2, 2)
 			OUIThreat:SetFrameStrata("TOOLTIP")
 			OUIThreat:Show()
 			OUIThreat:SetScript("OnEvent", OnEvent)
@@ -112,10 +114,22 @@ function M:InitializeThreatBar()
 end
 
 function M:LoadThreatBar()
+	StaticPopupDialogs["THREATBAR_MOVER"] = {
+		text = L["One or more of the changes you have made require a ReloadUI."],
+		button1 = ACCEPT,
+		button2 = CANCEL,
+		OnAccept = function() ReloadUI() end,
+		timeout = 0,
+		whileDead = 1,
+		hideOnEscape = false,
+		preferredIndex = 3,
+	}
 	if threatbar_db.threatbar_position == 'LEFT' then
 		OUIThreat = CreateFrame("StatusBar", "OUIThreatBar", LeftChatDataPanel)
 	elseif threatbar_db.threatbar_position == 'RIGHT' then
 		OUIThreat = CreateFrame("StatusBar", "OUIThreatBar", RightChatDataPanel)
+	elseif threatbar_db.threatbar_position == 'MOVER' then
+		OUIThreat = CreateFrame("StatusBar", "OUIThreatBar", UIParent)
 	end
 	
 	OUIThreat:Point("TOPLEFT", 2, -2)
@@ -146,4 +160,8 @@ function M:LoadThreatBar()
 	OUIThreat.unit = "player"
 	OUIThreat.tar = OUIThreat.unit.."target"
 	OUIThreat:SetAlpha(0)
+	if threatbar_db.threatbar_position == 'MOVER' then
+		OUIThreat:SetSize(E:Scale(threatbar_db.threatbar_width),E:Scale(threatbar_db.threatbar_height))
+		Mover = E:CreateMover(OUIThreat, 'OUIThreatBarFrameMover', 'ThreatBar')
+	end
 end

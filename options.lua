@@ -6,6 +6,8 @@ threatbar_db = threatbar_db or {
 	["threatbar_sound_disable"] = false,
 	["threatbar_sound"] = "Fel Nova",
 	["threatbar_position"] = 'RIGHT',
+	["threatbar_width"] = 410,
+	["threatbar_height"] = 20,
     ["threatbar_low_color"] = {
 		["r"] = 0.2941176470588235,
 		["g"] = 0.6862745098039216,
@@ -39,8 +41,18 @@ E.Options.args.datatexts.args.elvui_threatbar = {
             get = function(info) return threatbar_db[ info[#info] ] end,
             set = function(info, value) threatbar_db[ info[#info] ] = value; M:InitializeThreatBar() end,               
         },
-		threatbar_position = {
+		spacer = {
+			order = 2,
+			type = "description",
+			name = "",
+		},		
+		spacer = {
 			order = 3,
+			type = "description",
+			name = "",
+		},		
+		threatbar_position = {
+			order = 4,
 			type = 'select',
 			name = L['Position'],
 			desc = L['Position of the threatbar.'],
@@ -50,10 +62,34 @@ E.Options.args.datatexts.args.elvui_threatbar = {
 				['MOVER'] = L['Mover'],
 			},
 			get = function(info) return threatbar_db[ info[#info] ] end,
-			set = function(info, value) threatbar_db[ info[#info] ] = value; M:InitializeThreatBar() end
+			set = function(info, value) 
+				threatbar_db[ info[#info] ] = value;
+				M:InitializeThreatBar()
+				if value == 'MOVER' then 
+					StaticPopup_Show("THREATBAR_MOVER") 
+				end; 
+			end
 		},
+		threatbar_width = {
+			order = 5,
+			type = 'range',
+			name = L['Panel Width'],
+			desc = L['PANEL_DESC'],
+			get = function(info) return threatbar_db[ info[#info] ] end,
+			set = function(info, value) threatbar_db[ info[#info] ] = value; M:InitializeThreatBar() end,
+			min = 1, max = 700, step = 1,
+		},
+		threatbar_height = {
+			order = 6,
+			type = 'range',
+			name = L['Panel Width'],
+			desc = L['PANEL_DESC'],
+			get = function(info) return threatbar_db[ info[#info] ] end,
+			set = function(info, value) threatbar_db[ info[#info] ] = value; M:InitializeThreatBar() end,
+			min = 1, max = 700, step = 1,
+		},				
 		threatbar_sound_disable = {
-            order = 2,
+            order = 7,
             name = L["Disable Sound"],
 			desc = L["Don't play the warning sound."],
             type = 'toggle',
@@ -63,7 +99,7 @@ E.Options.args.datatexts.args.elvui_threatbar = {
 		threatbar_sound = {
 			type = "select",
 			dialogControl = 'LSM30_Sound',
-			order = 3,
+			order = 8,
 			name = L["Sound"],
 			desc = L["Sound that will play when you have a warning icon displayed."],
 			values = AceGUIWidgetLSMlists.sound,
@@ -71,8 +107,13 @@ E.Options.args.datatexts.args.elvui_threatbar = {
 			get = function(info) return threatbar_db[ info[#info] ] end,
 			set = function(info, value) threatbar_db[ info[#info] ] = value end
 		},
+		spacer = {
+			order = 9,
+			type = "description",
+			name = "",
+		},		
         threatbar_low_color = {
-            order = 4,
+            order = 10,
             name = 'Low threat color',
             desc = 'Low threat color',
             type = 'color',
@@ -88,7 +129,7 @@ E.Options.args.datatexts.args.elvui_threatbar = {
 			end,                  
         },
         threatbar_medium_color = {
-            order = 5,
+            order = 11,
             name = 'Medium threat color',
             desc = 'Medium threat color',
             type = 'color',
@@ -104,7 +145,7 @@ E.Options.args.datatexts.args.elvui_threatbar = {
 			end,                    
         },
 		threatbar_high_color = {
-            order = 6,
+            order = 12,
             name = 'High threat color',
             desc = 'High threat color',
             type = 'color',
